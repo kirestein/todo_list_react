@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
+const URL = 'http://localhost:3003/api/todos'
+
 function TodoForm(props) {
     const [input, setInput] = useState(props.edit ? props.edit.value : '')
-    const [tarefa, setTarefa] = useState('')
+    const [tarefa, setTarefa] = useState({ description: '', list: [] })
     const [update, setUpdate] = useState('')
+
+    
 
     const inputRef = useRef(null);
 
@@ -14,22 +18,28 @@ function TodoForm(props) {
 
     const handleChange = e => {
         setInput(e.target.value);
-        setTarefa(e.target.value);
-        
-
+        setTarefa({ ...useState, description: e.target.value })
     };
 
+    const handleAdd = () => {
+        const description = this.state.description
+        axios.post(URL, { description })
+            .then(resp => console.log('Funcionou!'))
+    }
+    
+
+    
     const handleChangeUpdate = e => {
         setInput(e.target.value);
         setUpdate(e.target.value);
     }
 
     const updateTodo = () => {
-        axios.put('http://localhost:3001/todo-list-put', { newTodo: update, oldTodo: tarefa })
+        axios.put(URL, { newTodo: update, oldTodo: tarefa })
     }
 
     const sendTodo = () => {
-        axios.post('http://localhost:3001/todo-list', { tarefa: tarefa })
+        axios.post(URL, { tarefa: tarefa })
     }
 
     const handleSubmit = e => {
@@ -65,10 +75,10 @@ function TodoForm(props) {
                         value={input}
                         name="text"
                         className='todo-input'
-                        onChange={handleChange}
+                        onChange={[handleChange, handleAdd]}
                         ref={inputRef}
                     />
-                    <button className='todo-button' onClick={sendTodo}>Add Todo</button>
+                    <button className='todo-button' onClick={handleAdd}>Add Todo</button>
                 </>
             )
             }
@@ -78,3 +88,4 @@ function TodoForm(props) {
 }
 
 export default TodoForm
+
