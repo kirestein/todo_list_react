@@ -27,6 +27,20 @@ app.get('/todo-list-res', (req, res) => {
     })
 })
 
+app.put('/todo-list-put', (req, res) => {
+    mongo.connect('mongodb://localhost:27017/', (erro, db) => {
+        if (erro) throw erro
+        var dbo = db.db('todoListDB');
+        dbo.collection('todoList').updateOne({tarefa: req.body.oldTodo}, { $set: {tarefa: req.body.newTodo}}, (erro) => {
+            if (erro) throw erro
+            db.close()
+        })
+        
+    })
+    console.log(`A tarefa antiga era ${req.body.oldTodo}`)
+    console.log(`A tarefa nova é ${req.body.newTodo}`)
+})
+
 module.exports = app;
 
 const mongo = require('mongodb').MongoClient;
