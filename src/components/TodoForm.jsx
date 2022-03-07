@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 
 function TodoForm(props) {
     const [input, setInput] = useState(props.edit ? props.edit.value : '')
+    const [tarefa, setTarefa] = useState('')
 
     const inputRef = useRef(null);
 
@@ -11,7 +13,13 @@ function TodoForm(props) {
 
     const handleChange = e => {
         setInput(e.target.value);
+        setTarefa(e.target.value);
+
     };
+
+    const sendTodo = () => {
+        axios.post('http://localhost:3001/todo-list', { tarefa: tarefa })
+    }
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -36,7 +44,7 @@ function TodoForm(props) {
                         onChange={handleChange}
                         ref={inputRef}
                     />
-                    <button className='todo-button edit'>Update</button>
+                    <button className='todo-button edit' onClick={sendTodo}>Update</button>
                 </>
             ) : (
                 <>
@@ -49,11 +57,11 @@ function TodoForm(props) {
                         onChange={handleChange}
                         ref={inputRef}
                     />
-                    <button className='todo-button'>Add Todo</button>
+                    <button className='todo-button' onClick={sendTodo}>Add Todo</button>
                 </>
             )
             }
-            
+
         </form>
     )
 }
