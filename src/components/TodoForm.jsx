@@ -29,7 +29,7 @@ function TodoForm(props) {
     
 
     
-    const handleChangeUpdate = e => {
+    const handleUpdate = e => {
         setInput(e.target.value);
         setUpdate(e.target.value);
     }
@@ -62,7 +62,7 @@ function TodoForm(props) {
                         value={input}
                         name="text"
                         className='todo-input edit'
-                        onChange={handleChangeUpdate}
+                        onChange={handleUpdate}
                         ref={inputRef}
                     />
                     <button className='todo-button edit' onClick={updateTodo}>Update</button>
@@ -78,7 +78,7 @@ function TodoForm(props) {
                         onChange={[handleChange, handleAdd]}
                         ref={inputRef}
                     />
-                    <button className='todo-button' onClick={handleAdd}>Add Todo</button>
+                    <button className='todo-button' onClick={sendTodo}>Add Todo</button>
                 </>
             )
             }
